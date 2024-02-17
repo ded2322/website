@@ -2,7 +2,7 @@ from pydantic import BaseModel
 
 
 class STag(BaseModel):
-    tag: int
+    name_tag: str
 
 
 class SUpdateTag(BaseModel):

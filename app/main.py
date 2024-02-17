@@ -9,15 +9,13 @@ from app.basket.router import router as basket_router
 from app.logger import logger
 
 app = FastAPI()
-# todo ПОКРЫТЬ ТЕСТАМИ
-# todo покрыть тестами и задокументировать
+
+# todo покрыть тестами
 app.include_router(router_auth)
 app.include_router(router_user)
-# todo сделать проверку прав пользователя, чтобы добавлять теги, товары
-# todo сделать пользователя который может удалять людей и т.д
 app.include_router(router_tags)
 app.include_router(router_tag)
-# todo задокументрировать
+#todo сделать вложенную структуру отзывов
 app.include_router(goods_router)
 app.include_router(reviews_router)
 # todo сделать так,чтобы можно было только один товар только одного вида добавить
