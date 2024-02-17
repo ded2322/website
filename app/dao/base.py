@@ -77,20 +77,24 @@ class  BaseDao:
                 logger.error(msg, exc_info=True)
 
     @classmethod
-    async def update_data(cls, id_column, column, new_data):
+    async def update_data(cls, id_column: int, column, new_data):
         """
-
-        :param id_column:
-        :param column:
-        :param new_data:
-        :return:
+        Обновляет данные в таблице
+        :param id_column - id строки которую нужно изменить
+        :param column - колонка которую нужно изменить
+        :param new_data - новые данные для изменения
         """
         async with async_session_maker() as session:
             try:
+                # SELECT * FROM model WHERE id = id_column;
                 query = await session.get(cls.model, id_column)
+                # Проверяет есть ли в таблице атрибут column
+                # if model.column
                 if hasattr(query, column):
+                    # model.column = new_data
                     setattr(query, column, new_data)
                     await session.commit()
+                    return None
                 else:
                     raise ValueError("Неправильные данные")
             except (SQLAlchemyError, Exception) as e:
