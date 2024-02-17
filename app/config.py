@@ -9,9 +9,9 @@ class Settings(BaseSettings):
     DB_PASS: str
     DB_USER: str
 
-    POSTGRES_DB: str
+    '''POSTGRES_DB: str
     POSTGRES_USER: str
-    POSTGRES_PASSWORD: str
+    POSTGRES_PASSWORD: str'''
 
     @property
     def DATABASE_URL(self):
@@ -20,7 +20,9 @@ class Settings(BaseSettings):
     SECRET_KEY: str
     ALGORITHM: str
 
-    model_config = SettingsConfigDict(env_file=".env_non_dev")
+    LOG_LEVEL:str
+
+    model_config = SettingsConfigDict(env_file=".env_dev")
 
 
-setting = Settings()
+settings = Settings()

@@ -6,7 +6,7 @@ from sqlalchemy import pool
 from alembic import context
 
 from app.database import Base
-from app.config import setting
+from app.config import settings
 # дальнейший импорт бд
 from app.models.users_models import User
 from app.models.tags_models import Tags
@@ -18,7 +18,7 @@ from app.models.basket_models import Basket
 # access to the values within the .ini file in use.
 config = context.config
 
-config.set_main_option("sqlalchemy.url",f"{setting.DATABASE_URL}?async_fallback=True")
+config.set_main_option("sqlalchemy.url",f"{settings.DATABASE_URL}?async_fallback=True")
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
