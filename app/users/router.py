@@ -31,8 +31,8 @@ async def register_user(data_user: SUserAuth):
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Это имя уже используется")
 
     # Добавляет данных в бд
-    await UserDao.insert_data(user_name=data_user.username, email=data_user.email,
-                              hashed_password=get_password_hash(data_user.password), is_superuser=False)
+    await UserDao.add_data(user_name=data_user.username, email=data_user.email,
+                           hashed_password=get_password_hash(data_user.password))
 
     return RedirectResponse("/auth/login")
 
@@ -85,7 +85,6 @@ async def update_data(new_data: SUserUpdateData, data_user=Depends(get_current_u
     Обновляет данные пользователя.
     Имя, почту, пароль. Все опционально
     """
-
     if new_data.user:
         # Если такое имя уже есть, ошибка
         if await UserDao.found_one_or_none(user_name=new_data.user):
@@ -102,6 +101,7 @@ async def update_data(new_data: SUserUpdateData, data_user=Depends(get_current_u
     if new_data.password:
         user_password = get_password_hash(new_data.password)
         await UserDao.update_data(data_user["id"], "hashed_password", user_password)
+
     return {"message" : "Данные успешно обновлены"}
 
 

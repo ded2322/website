@@ -31,8 +31,8 @@ async def add_reviews(data_reviews: SReviews, user_data=Depends(get_current_user
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Неправильная оценка")
 
     # Добавление отзыва к товару
-    await ReviewsDao.insert_data(title=data_reviews.title, description=data_reviews.description,
-                                 stars=data_reviews.stars, id_goods=data_reviews.id_goods, id_user=user_data["id"])
+    await ReviewsDao.add_data(title=data_reviews.title, description=data_reviews.description, stars=data_reviews.stars,
+                              id_goods=data_reviews.id_goods, id_user=user_data["id"])
     return {"message": "Данные успешно добавлены"}
 
 

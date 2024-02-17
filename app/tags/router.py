@@ -30,7 +30,7 @@ async def add_tag(data_tag: STag, user_data=Depends(get_current_user)):
     if await TagsDao.found_one_or_none(tag=data_tag.tag_goods):
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Данный тег уже существует")
 
-    await TagsDao.insert_data(tag=data_tag.tag_goods)
+    await TagsDao.add_data(tag=data_tag.tag_goods)
     return {"message": "Тег успешно добавлен"}
 
 

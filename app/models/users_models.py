@@ -11,4 +11,4 @@ class User(Base):
     email: Mapped[str] = mapped_column(String(length=320), nullable=True)
     hashed_password: Mapped[str] = mapped_column(String(length=1024), nullable=False)
 
-    review: Mapped["Reviews"] = relationship(back_populates="user_reviews")
+    reviews: Mapped["Reviews"] = relationship(back_populates="user_reviews")

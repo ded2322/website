@@ -52,7 +52,7 @@ async def add_goods(data_goods: SGoods, user_data=Depends(get_current_user)):
     if await GoodsDao.found_one_or_none(title=data_goods.title):
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Товар с данным названием уже существует")
 
-    await GoodsDao.insert_data(title=data_goods.title, description=data_goods.description, tag_id=info_tag["id"])
+    await GoodsDao.add_data(title=data_goods.title, description=data_goods.description, tag_id=info_tag["id"])
 
     return {"message": "Товар успешно добавлен"}
 

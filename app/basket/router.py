@@ -30,7 +30,7 @@ async def add_goods_basket(data_basket: SBasket, data_user=Depends(get_current_u
     if not await GoodsDao.found_one_or_none(id=data_basket.id_goods):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Товар не найден")
 
-    await BasketDao.insert_data(id_goods=data_basket.id_goods, id_user=data_user["id"])
+    await BasketDao.add_data(id_goods=data_basket.id_goods, id_user=data_user["id"])
 
     return {"message": "Товар успешно доваблен в корзину"}
 
