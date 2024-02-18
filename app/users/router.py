@@ -16,6 +16,11 @@ router_user = APIRouter(
 )
 
 
+@router_auth.post("/get_hesh")
+async def get_pass(password):
+    return get_password_hash(password)
+
+
 @router_auth.post("/register", status_code=200, summary="Register user")
 async def register_user(data_user: SUserAuth):
     """
@@ -37,7 +42,7 @@ async def register_user(data_user: SUserAuth):
     return RedirectResponse("/auth/login")
 
 
-@router_auth.post("/login", status_code=200,summary="Login user")
+@router_auth.post("/login", status_code=200, summary="Login user")
 async def login_user(response: Response, data_user: SUserLogin):
     """
     Производит аутентификацию пользователя.
@@ -67,7 +72,7 @@ async def info_user(user_data=Depends(get_current_user)):
     return user_data
 
 
-@router_user.get("/logout", status_code=204,summary="Logout user")
+@router_user.get("/logout", status_code=204, summary="Logout user")
 async def logout_user(response: Response):
     """
     Производит деаутентификация.
@@ -102,7 +107,7 @@ async def update_data(new_data: SUserUpdateData, data_user=Depends(get_current_u
         user_password = get_password_hash(new_data.password)
         await UserDao.update_data(data_user["id"], "hashed_password", user_password)
 
-    return {"message" : "Данные успешно обновлены"}
+    return {"message": "Данные успешно обновлены"}
 
 
 @router_user.delete("/delete", status_code=204, summary="Delete user")

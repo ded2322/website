@@ -32,7 +32,7 @@ async def add_reviews(data_reviews: SReviews, user_data=Depends(get_current_user
 
     # Добавление отзыва к товару
     await ReviewsDao.add_data(title=data_reviews.title, description=data_reviews.description, stars=data_reviews.stars,
-                              id_goods=data_reviews.id_goods, id_user=user_data["id"])
+                              id_goods=data_reviews.id_goods, name_user=user_data["user_name"])
     return {"message": "Данные успешно добавлены"}
 
 

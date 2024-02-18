@@ -22,11 +22,20 @@ async def show_basket():
 
 @router.get("/user")
 async def show_basket_user(data_user=Depends(get_current_user)):
+    """
+    Отображает товары в корзине пользователя
+    """
     return await BasketDao.show_basket_user(data_user["id"])
 
 
 @router.post("/add", status_code=200, summary="Add goods in basket")
 async def add_goods_basket(data_basket: SBasket, data_user=Depends(get_current_user)):
+    """
+
+    :param data_basket:
+    :param data_user:
+    :return:
+    """
     if not await GoodsDao.found_one_or_none(id=data_basket.id_goods):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Товар не найден")
 

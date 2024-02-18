@@ -1,4 +1,5 @@
 from sqlalchemy import select, func
+from sqlalchemy.orm import selectinload
 
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -49,28 +50,13 @@ class GoodsDao(BaseDao):
                     print(f"Unexpected error: {str(e)}")
 
     @classmethod
-    async def show_goods_reviews(cls, id_goods):
+    async def show_info_goods(cls, id_goods: int):
         async with async_session_maker() as session:
             """
-            select goods.title, tags.tag, reviews.stars, "user".user_name
-            from goods
-            left join tags ON goods.tag_id = tags.id
-            left join reviews on goods.id = reviews.id_goods 
-            left join "user" on reviews.id_user = "user".id
             """
             query = (
-                select(cls.model.id.label("id_goods"), cls.model.title.label("title_goods"),
-                       cls.model.description.label("description_goods"),
-                       Tags.tag,
-                       Reviews.stars, Reviews.title.label("title_reviews"),
-                       Reviews.description.label("reviews_description"),
-                       User.user_name
-                       )
-                .select_from(cls.model)
-                .join(Tags, cls.model.tag_id == Tags.id, isouter=True)
-                .join(Reviews, cls.model.id == Reviews.id_goods, isouter=True)
-                .join(User, Reviews.id_user == User.id, isouter=True)
+                select(cls.model).options(selectinload(cls.model.reviews))
                 .filter(cls.model.id == id_goods)
             )
-            result = await session.execute(query)
-            return result.mappings().all()
+            res = await session.execute(query)
+            return res.unique().mappings().all()

@@ -32,7 +32,7 @@ class BasketDao(BaseDao):
                     print(f"Unexpected error: {str(e)}")
 
     @classmethod
-    async def delete(cls, id_user,id_goods):
+    async def delete(cls, id_user, id_goods):
         async with async_session_maker() as session:
             try:
                 """
@@ -40,7 +40,7 @@ class BasketDao(BaseDao):
                 WHERE basket.id_goods = 10 and basket.id_user=40
                 """
                 query = (
-                    delete(cls.model).filter(cls.model.id_goods==id_goods,cls.model.id_user==id_user)
+                    delete(cls.model).filter(cls.model.id_goods == id_goods, cls.model.id_user == id_user)
                 )
                 await session.execute(query)
                 await session.commit()
@@ -49,6 +49,7 @@ class BasketDao(BaseDao):
                     print(f"Database error: {str(e)}")
                 else:
                     print(f"Unexpected error: {str(e)}")
+
     @classmethod
     async def found_basket(cls, **kwargs):
         async with async_session_maker() as session:

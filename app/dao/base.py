@@ -4,7 +4,8 @@ from sqlalchemy.exc import SQLAlchemyError
 from app.database import async_session_maker
 from app.logger import logger
 
-class  BaseDao:
+
+class BaseDao:
     model = None
 
     @classmethod
@@ -19,11 +20,11 @@ class  BaseDao:
                 return result.mappings().all()
             except (SQLAlchemyError, Exception) as e:
                 if isinstance(e, SQLAlchemyError):
-                    msg=f"Database exc show database: {str(e)}"
+                    msg = f"Database exc show database: {str(e)}"
                 else:
-                    msg=f"Unknown exc: {str(e)}"
+                    msg = f"Unknown exc: {str(e)}"
 
-                logger.error(msg, exc_info= True)
+                logger.error(msg, exc_info=True)
 
     @classmethod
     async def add_data(cls, **kwargs):

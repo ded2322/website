@@ -11,3 +11,6 @@ class Goods(Base):
     title: Mapped[str] = mapped_column(unique=True)
     description: Mapped[str]
     tag_id: Mapped[int] = mapped_column(ForeignKey("tags.id", ondelete="CASCADE"))
+
+    reviews: Mapped[list["Reviews"]] = relationship(back_populates="goods")
+

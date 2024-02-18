@@ -11,19 +11,12 @@ router = APIRouter(
 )
 
 
-@router.get('/all',status_code=200,summary="Show all goods")
-async def show_all_goods():
-    """
-    Отображает все доступные товары
-    """
-    return await GoodsDao.show_data()
-
 @router.get("",status_code=200,summary="Goods by id")
 async def show_goods(id_goods: int):
     """
     Отображает информацию и отзывы к товару по id.
     """
-    info_goods = await GoodsDao.show_goods_reviews(id_goods)
+    info_goods = await GoodsDao.show_info_goods(id_goods)
     if not info_goods:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Данного товара не существует")
     return info_goods
