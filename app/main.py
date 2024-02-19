@@ -6,6 +6,7 @@ from app.tags.router import router_tags, router_tag
 from app.goods.router import router as goods_router
 from app.reviews.router import router as reviews_router
 from app.basket.router import router as basket_router
+from app.search.router import router as search_router
 from app.logger import logger
 
 app = FastAPI()
@@ -17,9 +18,11 @@ app.include_router(router_tags)
 app.include_router(router_tag)
 # todo сделать отображение всех товаров
 app.include_router(goods_router)
+# todo починить удаленеие
 app.include_router(reviews_router)
-#todo сделать среднюю оценку по товару
+# todo сделать среднюю оценку по товару
 app.include_router(basket_router)
+app.include_router(search_router)
 
 
 @app.middleware("http")

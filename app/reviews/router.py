@@ -61,6 +61,12 @@ async def update_reviews(data_update: SReviewUpdate, user_data=Depends(get_curre
 
 @router.delete("/delete",status_code=204,summary="Delete reviews")
 async def delete_reviews(data_reviews: SReviewsDelete, data_user=Depends(get_current_user)):
+    """
+
+    :param data_reviews:
+    :param data_user:
+    :return:
+    """
     info_reviews = await ReviewsDao.found_one_or_none(id=data_reviews.id_reviews)
 
     if not info_reviews:
