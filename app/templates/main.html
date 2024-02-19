@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gallery</title>
+    <!-- Стили можно добавить прямо здесь или подключить через внешний CSS файл -->
+    <style>
+        .product {
+            margin-bottom: 20px;
+        }
+        .product-image img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="gallery">
+        {% for item in items %}
+            <div class="product">
+                <h2>{{ item.title }}</h2>
+
+                <div class="product-image">
+                    <!-- Убедитесь, что image_path уже содержит нужный относительный путь -->
+                    <img src="{{ item.image_path }}" alt="Image of {{ item.title }}">
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

@@ -8,7 +8,7 @@ class User(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     user_name: Mapped[str] = mapped_column(unique=True)
-    email: Mapped[str] = mapped_column(String(length=320), nullable=True)
+    email: Mapped[str] = mapped_column(String(length=40), nullable=True)
     hashed_password: Mapped[str] = mapped_column(String(length=1024), nullable=False)
 
     reviews: Mapped["Reviews"] = relationship(back_populates="username_reviews")

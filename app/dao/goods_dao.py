@@ -25,19 +25,19 @@ class GoodsDao(BaseDao):
         async with async_session_maker() as session:
             try:
                 """
-                SELECT goods.title, goods.description, tags.tag, reviews.review
+                SELECT goods.title, goods.description,goods.image_path, tags.tag, AVG(reviews.stars) as avarage_stars
                 FROM goods
-                LEFT JOIN tags ON goods.tag = tags.id
-                LEFT JOIN reviews ON goods.id = reviews.goods_id
-                GROUP BY goods.title, goods.description, tags.tag
+                LEFT JOIN tags ON goods.tag_id = tags.id
+                LEFT JOIN reviews ON goods.id = reviews.id_goods
+                GROUP BY goods.title, goods.description,goods.image_path, tags.tag
                 """
                 query = (
-                    select(cls.model.title, cls.model.description, Tags.tag,
+                    select(cls.model.title, cls.model.description,cls.model.image_path, Tags.tag,
                            func.avg(Reviews.stars).label("avarage_stars"))
                     .select_from(cls.model)
                     .join(Tags, cls.model.tag_id == Tags.id, isouter=True)
-                    .join(Reviews, Reviews.id_goods == cls.model.id, isouter=True)
-                    .group_by(cls.model.title, cls.model.description, Tags.tag)
+                    .join(Reviews, cls.model.id == Reviews.id_goods, isouter=True)
+                    .group_by(cls.model.title, cls.model.description,cls.model.image_path, Tags.tag)
                 )
 
                 if tag:
