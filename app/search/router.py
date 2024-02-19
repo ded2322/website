@@ -10,7 +10,7 @@ router = APIRouter (
 async def search_goods(name_goods:str):
     """
     Поиск товара
-    :param name_goods - название товара
+    name_goods - название товара
     """
     result = await GoodsDao.found_search_goods(name_goods)
     if not result:

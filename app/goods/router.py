@@ -15,6 +15,11 @@ router = APIRouter(
 )
 
 
+@router.get("/all")
+async def all_goods():
+    return await GoodsDao.show_data()
+
+
 @router.get("", status_code=200, summary="Goods by id")
 async def show_goods(id_goods: int):
     """
