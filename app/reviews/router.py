@@ -62,17 +62,13 @@ async def update_reviews(data_update: SReviewUpdate, user_data=Depends(get_curre
 @router.delete("/delete",status_code=204,summary="Delete reviews")
 async def delete_reviews(data_reviews: SReviewsDelete, data_user=Depends(get_current_user)):
     """
-
-    :param data_reviews:
-    :param data_user:
-    :return:
+    Удаляет указанный отзыв, только тот который человек уже добавил
     """
     info_reviews = await ReviewsDao.found_one_or_none(id=data_reviews.id_reviews)
-
     if not info_reviews:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Данного отзыва не существует")
 
-    if not info_reviews["id_user"] == data_user["id"]:
+    if not info_reviews["name_user"] == data_user["user_name"]:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Войдите под другим пользователем")
 
     await ReviewsDao.delete(id=data_reviews.id_reviews)

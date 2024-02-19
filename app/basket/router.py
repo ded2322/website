@@ -31,10 +31,7 @@ async def show_basket_user(data_user=Depends(get_current_user)):
 @router.post("/add", status_code=200, summary="Add goods in basket")
 async def add_goods_basket(data_basket: SBasket, data_user=Depends(get_current_user)):
     """
-
-    :param data_basket:
-    :param data_user:
-    :return:
+    Добавляет товар в корзину
     """
     if not await GoodsDao.found_one_or_none(id=data_basket.id_goods):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Товар не найден")
@@ -46,6 +43,9 @@ async def add_goods_basket(data_basket: SBasket, data_user=Depends(get_current_u
 
 @router.delete("/delete",status_code=204,summary="Delete goods for basket")
 async def delete_basket(data_basket: SBasket, data_user=Depends(get_current_user)):
+    """
+    Позволяет пользователю удалить товар из корзины
+    """
     info_basket = await BasketDao.found_basket(id_goods=data_basket.id_goods)
     if not info_basket:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Товар не найден")

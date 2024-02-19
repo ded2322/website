@@ -41,9 +41,6 @@ async def show_tag_goods(tag: str):
     goods_tags = await GoodsDao.show_goods(all_goods_seem_tags["tag"])
     image_path = goods_tags[0]["image_path"]
 
-
-
-
     return goods_tags, FileResponse(image_path)
 
 
@@ -67,6 +64,7 @@ async def add_goods(data_goods: SGoods = Depends(data_goods), file: UploadFile =
     if await GoodsDao.found_one_or_none(title=data_goods.title):
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Товар с данным названием уже существует")
 
+    # Загружает изображение
     image_path = str(upload_image(file))
 
     # добавление товара в базу данных

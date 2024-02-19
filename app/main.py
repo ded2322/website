@@ -15,14 +15,12 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 # todo все задокументировать
-# todo покрыть тестами
 app.include_router(router_auth)
 app.include_router(router_user)
 app.include_router(router_tags)
 app.include_router(router_tag)
 # todo сделать отображение всех товаров
 app.include_router(goods_router)
-# todo починить удаленеие
 app.include_router(reviews_router)
 # todo сделать среднюю оценку по товару
 app.include_router(basket_router)

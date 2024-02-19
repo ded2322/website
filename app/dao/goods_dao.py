@@ -8,7 +8,6 @@ from app.dao.base import BaseDao
 from app.database import async_session_maker
 from app.models.tags_models import Tags
 from app.models.reviews_models import Reviews
-from app.models.users_models import User
 from app.logger import logger
 
 
@@ -18,9 +17,7 @@ class GoodsDao(BaseDao):
     @classmethod
     async def show_goods(cls, tag=None):
         """
-
-        :param tag:
-        :return:
+        Отображает все товары из выбраной категории
         """
         async with async_session_maker() as session:
             try:
@@ -33,7 +30,7 @@ class GoodsDao(BaseDao):
                 """
                 query = (
                     select(cls.model.title, cls.model.description,cls.model.image_path, Tags.tag,
-                           func.avg(Reviews.stars).label("avarage_stars"))
+                           func.round(func.avg(Reviews.stars), 0).label("avarage_stars"))
                     .select_from(cls.model)
                     .join(Tags, cls.model.tag_id == Tags.id, isouter=True)
                     .join(Reviews, cls.model.id == Reviews.id_goods, isouter=True)
@@ -61,11 +58,12 @@ class GoodsDao(BaseDao):
             try:
                 query = (
                     select(cls.model,
-                           func.avg(Reviews.stars).label("avarage_stars"))
-                    .join(Reviews, cls.model.id == Reviews.id_goods)
+                           func.round(func.avg(Reviews.stars), 0).label("avarage_stars"))
+                    .join(Reviews, cls.model.id == Reviews.id_goods,isouter=True)
                     .options(selectinload(cls.model.reviews))
-                    .group_by(cls.model.id)
                     .filter(cls.model.id == id_goods)
+                    .group_by(cls.model.id)
+
                 )
                 res = await session.execute(query)
                 return res.unique().mappings().all()
@@ -84,17 +82,17 @@ class GoodsDao(BaseDao):
         async with async_session_maker() as session:
             try:
                 """
-                SELECT goods.id,goods.title, AVG(reviews.stars) AS avarage_stars
+                SELECT goods.id,goods.title, ROUND(AVG(reviews.stars),0) AS avarage_stars
                 FROM goods
                 JOIN reviews ON goods.id = reviews.id_goods
                 WHERE goods.title LIKE '%user_input%'
                 GROUP BY goods.id
                 """
                 query = (
-                    select(cls.model.id.label("id_goods"), cls.model.title.label("title_goods"),
+                    select(cls.model.id.label("id_goods"), cls.model.title.label("title_goods"),cls.model.image_path,
                            func.round(func.avg(Reviews.stars), 0).label("avarage_stars")
                            )
-                    .join(Reviews, cls.model.id == Reviews.id_goods)
+                    .join(Reviews, cls.model.id == Reviews.id_goods, isouter=True)
                     .where(cls.model.title.like(f"%{user_input}%"))
                     .group_by(cls.model.id)
                 )
