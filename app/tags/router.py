@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends, status
+from fastapi import APIRouter, Depends, HTTPException, status
 
 from app.dao.tags_dao import TagsDao
 from app.schemas.tags_schemas import STag, SUpdateTag

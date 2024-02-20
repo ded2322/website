@@ -1,9 +1,10 @@
 from sqladmin import Admin, ModelView
-from app.models.users_models import User
-from app.models.tags_models import Tags
+
+from app.models.basket_models import Basket
 from app.models.goods_models import Goods
 from app.models.reviews_models import Reviews
-from app.models.basket_models import Basket
+from app.models.tags_models import Tags
+from app.models.users_models import User
 
 
 class UserAdmin(ModelView, model=User):

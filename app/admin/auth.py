@@ -1,7 +1,8 @@
+from typing import Optional
+
 from sqladmin.authentication import AuthenticationBackend
 from starlette.requests import Request
 from starlette.responses import RedirectResponse
-from typing import Optional
 
 from app.users.auth import authenticate_user, create_access_token
 from app.users.dependencies import get_current_user

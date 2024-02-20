@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from app.schemas.reviews_schemas import SReviews, SReviewUpdate, SReviewsDelete
-from app.users.dependencies import get_current_user
 from app.dao.reviews_dao import ReviewsDao
+from app.schemas.reviews_schemas import SReviews, SReviewsDelete, SReviewUpdate
+from app.users.dependencies import get_current_user
 
 router = APIRouter(prefix="/reviews", tags=["Reviews"])
 

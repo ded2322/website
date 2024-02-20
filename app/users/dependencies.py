@@ -1,5 +1,5 @@
+from fastapi import Depends, HTTPException, Request, status
 from jose import ExpiredSignatureError, JWTError, jwt
-from fastapi import Depends, Request, HTTPException, status
 
 from app.config import settings
 from app.dao.user_dao import UserDao

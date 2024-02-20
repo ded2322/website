@@ -1,19 +1,21 @@
 import time
+
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from sqladmin import Admin
 
-from app.users.router import router_auth, router_user
-from app.tags.router import router_tags, router_tag
-from app.goods.router import router as goods_router
-from app.reviews.router import router as reviews_router
-from app.basket.router import router as basket_router
-from app.search.router import router as search_router
-from app.pages.router import router as pages_router
-from app.admin.views import UserAdmin, GoodsAdmin, TagsAdmin, ReviewsAdmin, BasketAdmin
 from app.admin.auth import authentication_backend
+from app.admin.views import (BasketAdmin, GoodsAdmin, ReviewsAdmin, TagsAdmin,
+                             UserAdmin)
+from app.basket.router import router as basket_router
 from app.database import engine
+from app.goods.router import router as goods_router
 from app.logger import logger
+from app.pages.router import router as pages_router
+from app.reviews.router import router as reviews_router
+from app.search.router import router as search_router
+from app.tags.router import router_tag, router_tags
+from app.users.router import router_auth, router_user
 
 # Создание Fastapi
 app = FastAPI()
@@ -22,7 +24,7 @@ app.mount("/static", StaticFiles(directory="app/static"), name="static")
 # Создание админ.панели
 admin = Admin(app, engine, authentication_backend=authentication_backend)
 
-# todo все задокументировать
+# Подключение маршрутов
 app.include_router(router_auth)
 app.include_router(router_user)
 app.include_router(router_tags)
