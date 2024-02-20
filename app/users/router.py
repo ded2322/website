@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Response, Depends, status
 from fastapi.responses import RedirectResponse
 
 from app.schemas.users_schemas import SUserAuth, SUserLogin, SUserUpdateData
-from app.users.auth import get_password_hash, verification_password, create_access_token
+from app.users.auth import get_password_hash, authenticate_user,create_access_token
 from app.users.dependencies import get_current_user
 from app.dao.user_dao import UserDao
 
@@ -48,14 +48,7 @@ async def login_user(response: Response, data_user: SUserLogin):
     Производит аутентификацию пользователя.
     Создает куки с информацией о пользователе.
     """
-    user = await UserDao.found_one_or_none(user_name=data_user.username)
-    if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Такого пользователя не существует")
-
-    correct_password = verification_password(data_user.password, user.hashed_password)
-
-    if not user or not correct_password:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Неверный логин или пароль")
+    user = await authenticate_user(data_user.username,data_user.password)
     try:
         response.set_cookie("access_token", create_access_token({"sub": str(user.id)}), httponly=True)
     except Exception as e:

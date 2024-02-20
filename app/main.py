@@ -11,6 +11,7 @@ from app.basket.router import router as basket_router
 from app.search.router import router as search_router
 from app.pages.router import router as pages_router
 from app.admin.views import UserAdmin,GoodsAdmin,TagsAdmin,ReviewsAdmin,BasketAdmin
+from app.admin.auth import authentication_backend
 from app.database import engine
 from app.logger import logger
 
@@ -19,8 +20,7 @@ app = FastAPI()
 # "Показывает" место где храняться статические файлы
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 # Создание админ.панели
-admin = Admin(app, engine)
-
+admin = Admin(app, engine,authentication_backend=authentication_backend)
 
 # todo все задокументировать
 app.include_router(router_auth)
