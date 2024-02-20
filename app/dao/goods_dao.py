@@ -29,12 +29,22 @@ class GoodsDao(BaseDao):
                 GROUP BY goods.title, goods.description,goods.image_path, tags.tag
                 """
                 query = (
-                    select(cls.model.title, cls.model.description,cls.model.image_path, Tags.tag,
-                           func.round(func.avg(Reviews.stars), 0).label("avarage_stars"))
+                    select(
+                        cls.model.title,
+                        cls.model.description,
+                        cls.model.image_path,
+                        Tags.tag,
+                        func.round(func.avg(Reviews.stars), 0).label("avarage_stars"),
+                    )
                     .select_from(cls.model)
                     .join(Tags, cls.model.tag_id == Tags.id, isouter=True)
                     .join(Reviews, cls.model.id == Reviews.id_goods, isouter=True)
-                    .group_by(cls.model.title, cls.model.description,cls.model.image_path, Tags.tag)
+                    .group_by(
+                        cls.model.title,
+                        cls.model.description,
+                        cls.model.image_path,
+                        Tags.tag,
+                    )
                 )
 
                 if tag:
@@ -57,13 +67,14 @@ class GoodsDao(BaseDao):
         async with async_session_maker() as session:
             try:
                 query = (
-                    select(cls.model,
-                           func.round(func.avg(Reviews.stars), 0).label("avarage_stars"))
-                    .join(Reviews, cls.model.id == Reviews.id_goods,isouter=True)
+                    select(
+                        cls.model,
+                        func.round(func.avg(Reviews.stars), 0).label("avarage_stars"),
+                    )
+                    .join(Reviews, cls.model.id == Reviews.id_goods, isouter=True)
                     .options(selectinload(cls.model.reviews))
                     .filter(cls.model.id == id_goods)
                     .group_by(cls.model.id)
-
                 )
                 res = await session.execute(query)
                 return res.unique().mappings().all()
@@ -89,9 +100,12 @@ class GoodsDao(BaseDao):
                 GROUP BY goods.id
                 """
                 query = (
-                    select(cls.model.id.label("id_goods"), cls.model.title.label("title_goods"),cls.model.image_path,
-                           func.round(func.avg(Reviews.stars), 0).label("avarage_stars")
-                           )
+                    select(
+                        cls.model.id.label("id_goods"),
+                        cls.model.title.label("title_goods"),
+                        cls.model.image_path,
+                        func.round(func.avg(Reviews.stars), 0).label("avarage_stars"),
+                    )
                     .join(Reviews, cls.model.id == Reviews.id_goods, isouter=True)
                     .where(cls.model.title.like(f"%{user_input}%"))
                     .group_by(cls.model.id)

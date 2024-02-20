@@ -15,7 +15,7 @@ class UserAdmin(ModelView, model=User):
 
 
 class TagsAdmin(ModelView, model=Tags):
-    column_list = [Tags.id,Tags.tag,Tags.goods_tag]
+    column_list = [Tags.id, Tags.tag, Tags.goods_tag]
     name = "Тег"
     name_plural = "Теги"
     icon = "fa-solid fa-tags"
@@ -29,14 +29,14 @@ class GoodsAdmin(ModelView, model=Goods):
 
 
 class ReviewsAdmin(ModelView, model=Reviews):
-    column_list = [Reviews.id,Reviews.name_user,Reviews.stars,Reviews.goods]
+    column_list = [Reviews.id, Reviews.name_user, Reviews.stars, Reviews.goods]
     name = "Отзыв"
     name_plural = "Отзывы"
     icon = "fa-solid fa-star"
 
 
 class BasketAdmin(ModelView, model=Basket):
-    column_list = [Basket.id,Basket.username,Basket.goods]
+    column_list = [Basket.id, Basket.username, Basket.goods]
     name = "Корзина"
     name_plural = "Корзина"
     icon = "fa-solid fa-basket-shopping"

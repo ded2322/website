@@ -16,5 +16,3 @@ class SGoodsUpdate(BaseModel):
     id_goods: Optional[int] = None
     new_title: Optional[str] = None
     new_description: Optional[str] = None
-
-

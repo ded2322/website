@@ -10,7 +10,7 @@ from app.reviews.router import router as reviews_router
 from app.basket.router import router as basket_router
 from app.search.router import router as search_router
 from app.pages.router import router as pages_router
-from app.admin.views import UserAdmin,GoodsAdmin,TagsAdmin,ReviewsAdmin,BasketAdmin
+from app.admin.views import UserAdmin, GoodsAdmin, TagsAdmin, ReviewsAdmin, BasketAdmin
 from app.admin.auth import authentication_backend
 from app.database import engine
 from app.logger import logger
@@ -20,7 +20,7 @@ app = FastAPI()
 # "Показывает" место где храняться статические файлы
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 # Создание админ.панели
-admin = Admin(app, engine,authentication_backend=authentication_backend)
+admin = Admin(app, engine, authentication_backend=authentication_backend)
 
 # todo все задокументировать
 app.include_router(router_auth)
@@ -45,6 +45,7 @@ async def add_process_time_header(request: Request, call_next):
     start_time = time.time()
     response = await call_next(request)
     process_time = time.time() - start_time
-    logger.info(f"Request handling time",
-                extra={"process_time": round(process_time, 4)})
+    logger.info(
+        f"Request handling time", extra={"process_time": round(process_time, 4)}
+    )
     return response

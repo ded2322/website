@@ -12,6 +12,7 @@ class User(Base):
     hashed_password: Mapped[str] = mapped_column(String(length=1024), nullable=False)
 
     reviews: Mapped["Reviews"] = relationship(back_populates="username_reviews")
-    user =relationship("Basket",back_populates="username")
+    user = relationship("Basket", back_populates="username")
+
     def __str__(self):
         return f"{self.user_name}"

@@ -14,7 +14,7 @@ class AdminAuth(AuthenticationBackend):
         user = await authenticate_user(username, password)
         try:
             access_token = create_access_token({"sub": user["id"]})
-            request.session.update({"access_token":access_token})
+            request.session.update({"access_token": access_token})
         except Exception as e:
             raise f"{str(e)}"
 

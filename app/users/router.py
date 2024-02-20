@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Response, Depends, status
 from fastapi.responses import RedirectResponse
 
 from app.schemas.users_schemas import SUserAuth, SUserLogin, SUserUpdateData
-from app.users.auth import get_password_hash, authenticate_user,create_access_token
+from app.users.auth import get_password_hash, authenticate_user, create_access_token
 from app.users.dependencies import get_current_user
 from app.dao.user_dao import UserDao
 
@@ -14,11 +14,6 @@ router_user = APIRouter(
     prefix="/user",
     tags=["User"],
 )
-
-
-@router_auth.post("/get_hesh")
-async def get_pass(password):
-    return get_password_hash(password)
 
 
 @router_auth.post("/register", status_code=200, summary="Register user")
@@ -33,11 +28,16 @@ async def register_user(data_user: SUserAuth):
     """
     # Если в бд есть введенное пользователем имя или почта, выдает ошибку
     if await UserDao.found_one_or_none(user_name=data_user.username):
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Это имя уже используется")
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT, detail="Это имя уже используется"
+        )
 
     # Добавляет данных в бд
-    await UserDao.add_data(user_name=data_user.username, email=data_user.email,
-                           hashed_password=get_password_hash(data_user.password))
+    await UserDao.add_data(
+        user_name=data_user.username,
+        email=data_user.email,
+        hashed_password=get_password_hash(data_user.password),
+    )
 
     return RedirectResponse("/auth/login")
 
@@ -48,9 +48,11 @@ async def login_user(response: Response, data_user: SUserLogin):
     Производит аутентификацию пользователя.
     Создает куки с информацией о пользователе.
     """
-    user = await authenticate_user(data_user.username,data_user.password)
+    user = await authenticate_user(data_user.username, data_user.password)
     try:
-        response.set_cookie("access_token", create_access_token({"sub": str(user.id)}), httponly=True)
+        response.set_cookie(
+            "access_token", create_access_token({"sub": str(user.id)}), httponly=True
+        )
     except Exception as e:
         raise f"{str(e)}"
 
@@ -81,18 +83,24 @@ async def logout_user(response: Response):
 async def update_data(new_data: SUserUpdateData, data_user=Depends(get_current_user)):
     """
     Обновляет данные пользователя.
-    Имя, почту, пароль. Все опционально
+    Имя, почту, пароль, все опционально
     """
     if new_data.user:
         # Если такое имя уже есть, ошибка
         if await UserDao.found_one_or_none(user_name=new_data.user):
-            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Данное имя уже используется")
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Данное имя уже используется",
+            )
 
         await UserDao.update_data(data_user["id"], "user_name", new_data.user)
 
     if new_data.email:
         if await UserDao.found_one_or_none(email=new_data.email):
-            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Данная почта уже используется")
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Данная почта уже используется",
+            )
 
         await UserDao.update_data(data_user["id"], "email", new_data.email)
 

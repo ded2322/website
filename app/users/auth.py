@@ -27,6 +27,8 @@ def create_access_token(data: dict) -> str:
 async def authenticate_user(username: str, password: str):
     user = await UserDao.found_one_or_none(user_name=username)
     if not user or not verification_password(password, user.hashed_password):
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Неверный логин или пароль")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Неверный логин или пароль"
+        )
 
     return user

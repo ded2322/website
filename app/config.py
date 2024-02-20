@@ -20,7 +20,7 @@ class Settings(BaseSettings):
     SECRET_KEY: str
     ALGORITHM: str
 
-    LOG_LEVEL:str
+    LOG_LEVEL: str
 
     model_config = SettingsConfigDict(env_file=".env_non_dev")
 

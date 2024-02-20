@@ -25,10 +25,12 @@ class BasketDao(BaseDao):
                 GROUP BY goods.title
                 """
                 query = (
-                    select(Goods.title, func.round(func.avg(Reviews.stars),0).label("avarage_stars")
+                    select(
+                        Goods.title,
+                        func.round(func.avg(Reviews.stars), 0).label("avarage_stars"),
                     )
                     .select_from(cls.model)
-                    .join(Goods, Goods.id == Basket.id_goods,isouter=True)
+                    .join(Goods, Goods.id == Basket.id_goods, isouter=True)
                     .join(Reviews, Reviews.id_goods == Basket.id_goods, isouter=True)
                     .group_by(Goods.title)
                     .filter(cls.model.id_user == user_id)
@@ -50,8 +52,8 @@ class BasketDao(BaseDao):
                 DELETE FROM basket
                 WHERE basket.id_goods = 10 and basket.id_user=40
                 """
-                query = (
-                    delete(cls.model).filter(cls.model.id_goods == id_goods, cls.model.id_user == id_user)
+                query = delete(cls.model).filter(
+                    cls.model.id_goods == id_goods, cls.model.id_user == id_user
                 )
                 await session.execute(query)
                 await session.commit()
@@ -69,9 +71,7 @@ class BasketDao(BaseDao):
                 SELECT * FROM basket
                 WHERE **kwargs
                 """
-                query = (
-                    select(cls.model).filter_by(**kwargs)
-                )
+                query = select(cls.model).filter_by(**kwargs)
                 result = await session.execute(query)
                 return result.mappings().all()
             except (SQLAlchemyError, Exception) as e:
