@@ -18,3 +18,6 @@ class Reviews(Base):
     username_reviews: Mapped["User"] = relationship(back_populates="reviews")
     goods:Mapped["Goods"] = relationship(back_populates="reviews")
 
+    # сделать удобо читаемый вид
+    def str(self):
+        return f"{self.title}"

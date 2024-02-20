@@ -14,4 +14,10 @@ class Goods(Base):
     image_path:Mapped[str] = mapped_column(Text,nullable=False)
 
     reviews: Mapped[list["Reviews"]] = relationship(back_populates="goods")
+    # связать,чтобы было видно название тега
+    # сделать удобо читаемый вид
+    tag = relationship("Tags", back_populates="goods_tag")
+    name_goods = relationship("Basket", back_populates="goods")
 
+    def __str__(self):
+        return f"Название товара: {self.title}"

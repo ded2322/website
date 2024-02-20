@@ -20,18 +20,6 @@ async def all_goods():
     return await GoodsDao.show_data()
 
 
-@router.get("", status_code=200, summary="Goods by id")
-async def show_goods(id_goods: int):
-    """
-    Отображает информацию и отзывы к товару по id.
-    """
-    info_goods = await GoodsDao.show_info_goods(id_goods)
-    if not info_goods:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Данного товара не существует")
-
-    return info_goods
-
-
 @router.get("/{tag}", status_code=200, summary="Goods by tags")
 async def show_tag_goods(tag: str):
     """
@@ -48,6 +36,16 @@ async def show_tag_goods(tag: str):
 
     return goods_tags, FileResponse(image_path)
 
+@router.get("/", status_code=200, summary="Goods by id")
+async def show_goods(id_goods: int):
+    """
+    Отображает информацию и отзывы к товару по id.
+    """
+    info_goods = await GoodsDao.show_info_goods(id_goods)
+    if not info_goods:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Данного товара не существует")
+
+    return info_goods
 
 async def data_goods(title: str = Form(), description: str = Form(), tag: str = Form()) -> SGoods:
     return SGoods(title=title, description=description, tag=tag)
