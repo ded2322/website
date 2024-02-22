@@ -42,6 +42,11 @@ admin.add_view(ReviewsAdmin)
 admin.add_view(BasketAdmin)
 
 
+origins = [
+    # 3000 - порт, на котором работает фронтенд на React.js
+    "http://localhost:3000",
+]
+
 @app.middleware("http")
 async def add_process_time_header(request: Request, call_next):
     start_time = time.time()

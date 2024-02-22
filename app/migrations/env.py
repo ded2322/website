@@ -5,11 +5,11 @@ from sqlalchemy import engine_from_config, pool
 
 from app.config import settings
 from app.database import Base
+# Импорт модулей
 from app.models.basket_models import Basket
 from app.models.goods_models import Goods
 from app.models.reviews_models import Reviews
 from app.models.tags_models import Tags
-# дальнейший импорт бд
 from app.models.users_models import User
 
 # this is the Alembic Config object, which provides
